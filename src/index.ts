@@ -1,4 +1,7 @@
 import { routes } from './handlers.js';
+import { CacheStorage } from './durable-cache.js';
+
+export { CacheStorage };
 
 export default {
   async fetch(request, env) {
