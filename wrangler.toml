@@ -1,0 +1,23 @@
+# For more details on how to configure Wrangler, refer to:
+# https://developers.cloudflare.com/workers/wrangler/configuration/
+
+name = "proxy"
+main = "src/index.ts"
+compatibility_date = "2025-04-01"
+upload_source_maps = true
+
+[observability]
+enabled = true
+
+[[durable_objects.bindings]]
+name = "CACHE_STORAGE"
+class_name = "CacheStorage"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["CacheStorage"]
+
+
+[[kv_namespaces]]
+binding = "KV"
+id = "eaaf49ca2fb34a6798937f6ac87857db"

@@ -1,0 +1,15 @@
+{
+	"name": "personal-proxy",
+	"description": "A personal proxy server.",
+	"private": true,
+	"devDependencies": {
+		"typescript": "5.8.3",
+		"wrangler": "^4.38.0"
+	},
+	"scripts": {
+		"cf-typegen": "wrangler types",
+		"check": "tsc && wrangler deploy --dry-run",
+		"deploy": "wrangler deploy",
+		"dev": "wrangler dev"
+	}
+}
