@@ -41,6 +41,36 @@ export class DurableObjectCache implements DurableCache {
   }
 }
 
+// 全局缓存封装类
+export class GlobalCache {
+  private cache: DurableObjectCache;
+
+  constructor(env: Env) {
+    const cacheId = env.CACHE_STORAGE.idFromName("global-cache");
+    const cacheStub = env.CACHE_STORAGE.get(cacheId);
+    this.cache = new DurableObjectCache(cacheStub);
+  }
+
+  async get<T>(key: string): Promise<T | null> {
+    const item = await this.cache.getCacheItem(key);
+    return item ? item.data as T : null;
+  }
+
+  async set<T>(key: string, data: T, ttlMs: number = Infinity): Promise<void> {
+    const expiredAt = ttlMs === Infinity ? Infinity : Date.now() + ttlMs;
+    await this.cache.setCacheItem(key, { data, expiredAt });
+  }
+
+  async delete(key: string): Promise<void> {
+    await this.cache.deleteCacheItem(key);
+  }
+
+  async has(key: string): Promise<boolean> {
+    const item = await this.cache.getCacheItem(key);
+    return item !== null;
+  }
+}
+
 export function createCorsHeaders(): Headers {
   const headers = new Headers();
   headers.set('Access-Control-Allow-Origin', '*');
